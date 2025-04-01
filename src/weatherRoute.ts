@@ -2,7 +2,8 @@ import express, { Request, Response } from 'express';
 import axios from 'axios';
 import Weather from './weatherModels';
 import weatherResponse from './weatherResponse.json'
-import dotenv from 'dotenv';
+import { env } from './envConfig';
+
 const router = express.Router();
  
 router.post('/SaveWeatherMapping', async (req: Request, res: Response): Promise<any> => {
@@ -12,7 +13,7 @@ router.post('/SaveWeatherMapping', async (req: Request, res: Response): Promise<
  
     for (const { city, country } of cities) {
       const geoResponse = await axios.get<{ latitude: number; longitude: number }[]>(`https://api.api-ninjas.com/v1/geocoding?city=${city}`, {
-        headers: { 'X-Api-Key': process.env.X_API_KEY || '' },
+        headers: { 'X-Api-Key': env.xapikey },
       });
  
       if (!geoResponse.data || !geoResponse.data.length) {
